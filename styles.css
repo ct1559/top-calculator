@@ -1,0 +1,79 @@
+@import url("https://fonts.googleapis.com/css2?family=Baloo+Tammudu+2&family=Press+Start+2P&display=swap");
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.calc-container {
+  height: 600px;
+  width: 450px;
+  background-color: #f39189;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 5px 5px 5px gray;
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  grid-template-areas:
+    "screen screen screen screen"
+    "clear clear backspace divide";
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+#screen {
+  background-color: #046582;
+  color: white;
+  font-family: "Press Start 2P", cursive;
+  font-size: 50px;
+  border-radius: 10px;
+  height: 100%;
+  width: 100%;
+  grid-area: screen;
+  display: flex;
+  justify-content: end;
+  align-items: flex-end;
+}
+
+.btn {
+  height: 100%;
+  width: 100%;
+  background-color: #bb8082;
+  color: white;
+  font-family: "Baloo Tammudu 2", cursive;
+  font-size: 30px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#backspace {
+  grid-area: backspace;
+}
+
+#clear {
+  grid-area: clear;
+}
+
+#divide {
+  grid-area: divide;
+}
+
+#zero {
+  grid-column: 1 / span 2;
+}
+
+.operator {
+  background-color: #6e7582;
+}
+
+.clear {
+  background-color: #6e7582;
+}
