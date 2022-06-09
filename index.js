@@ -1,4 +1,5 @@
 function add(num1, num2) {
+  console.log("Made it into addition function");
   return num1 + num2;
 }
 
@@ -17,52 +18,98 @@ function divide(num1, num2) {
 function operate(operand, num1, num2) {
   switch (operand) {
     case "+":
-      add(num1, num2);
-      break;
+      return add(num1, num2);
     case "-":
-      subtract(num1, num2);
-      break;
+      return subtract(num1, num2);
     case "*":
-      multiply(num1, num2);
-      break;
+      return multiply(num1, num2);
     case "/":
-      divide(num1 / num2);
-      break;
+      return divide(num1 / num2);
   }
 }
 
-// Function to convert button input
-function convertBtnInput(str) {
-  switch (str) {
-    case "zero":
-      return 0;
-    case "one":
-      return 1;
-    case "two":
-      return 2;
-    case "three":
-      return 3;
-    case "four":
-      return 4;
-    case "five":
-      return 5;
-    case "six":
-      return 6;
-    case "seven":
-      return 7;
-    case "eight":
-      return 8;
-    case "nine":
-      return 9;
-  }
-}
+// Input Variables
+let inputNum = "";
+let tempOperand = "";
+let tempNum1 = "";
+let tempNum2 = "";
+let displayOutput = 0;
 
-// Listen for Button Events
+// // Listen for Button Events
+const display = document.querySelector("#screen");
 const btn = document.querySelectorAll(".btn");
 btn.forEach(function (currentValue, currentIndex, listObj) {
   currentValue.addEventListener("click", (e) => {
-    console.log(e.target.id);
-    console.log(convertBtnInput(e.target.id));
-    convertBtnInput(e.target.id);
+    let numRegex = /^\d$/;
+
+    // Keep adding characters to Input num until the btn selection is not a number
+    if (numRegex.test(e.target.textContent)) {
+      inputNum += e.target.textContent;
+      displayOutput = inputNum;
+    } else {
+      // Perform math function if both tempNum1 and tempNum2 both have values
+      if (tempNum1 != "") {
+        tempNum2 = inputNum;
+        inputNum = "";
+        displayOutput = operate(
+          tempOperand,
+          parseFloat(tempNum1),
+          parseFloat(tempNum2)
+        );
+        tempOperand = e.target.textContent;
+        // Clear variables is equals button is hit to complete operation
+        if (tempOperand === "=") {
+          tempNum1 = "";
+          tempNum2 = "";
+          inputNum = "";
+          tempOperand = "";
+        } else {
+          tempNum1 = toString(displayOutput);
+          tempNum2 = "";
+          console.log(displayOutput);
+        }
+        // If the Equals button is selected before second num is enter, display error
+      } else if (e.target.textContent === "=" && tempNum2 === "") {
+        displayOutput = "Invalid Expression";
+        tempNum1 = "";
+        tempOperand = "";
+        inputNum = "";
+      } else {
+        // If tempNum1 is empty, put input number into it
+        if (tempNum1 === "") {
+          tempNum1 = inputNum;
+          console.log(tempNum1);
+          inputNum = "";
+          tempOperand = e.target.textContent;
+        } else {
+          // If tempNum1 has data already, put number into tempNum2 then evaluate
+          tempNum2 = inputNum;
+          console.log(tempNum2);
+          inputNum = "";
+          // Choose math function based on operator
+          displayOutput = operate(
+            tempOperand,
+            parseFloat(tempNum1),
+            parseFloat(tempNum2)
+          );
+          tempOperand = e.target.textContent;
+          // Clear variables is equals button is hit to complete operation
+          if (tempOperand === "=") {
+            tempNum1 = "";
+            tempNum2 = "";
+            inputNum = "";
+            tempOperand = "";
+            console.log(displayOutput);
+          } else {
+            tempNum1 = toString(displayOutput);
+            tempNum2 = "";
+            tempOperand;
+            console.log(displayOutput);
+          }
+        }
+      }
+    }
+    // Add expression to display
+    display.textContent = displayOutput;
   });
 });
