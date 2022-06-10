@@ -1,5 +1,4 @@
 function add(num1, num2) {
-  console.log("Made it into addition function");
   return num1 + num2;
 }
 
@@ -12,6 +11,9 @@ function multiply(num1, num2) {
 }
 
 function divide(num1, num2) {
+  if (num2 === 0) {
+    return "Can't Divide by 0!";
+  }
   return num1 / num2;
 }
 
@@ -24,7 +26,7 @@ function operate(operand, num1, num2) {
     case "*":
       return multiply(num1, num2);
     case "/":
-      return divide(num1 / num2);
+      return divide(num1, num2);
   }
 }
 
@@ -40,12 +42,28 @@ const display = document.querySelector("#screen");
 const btn = document.querySelectorAll(".btn");
 btn.forEach(function (currentValue, currentIndex, listObj) {
   currentValue.addEventListener("click", (e) => {
-    let numRegex = /^\d$/;
+    let numRegex = /^\d$|\./;
 
     // Keep adding characters to Input num until the btn selection is not a number
     if (numRegex.test(e.target.textContent)) {
       inputNum += e.target.textContent;
       displayOutput = inputNum;
+      // Clear input if clear button pressed
+    } else if (e.target.textContent === "Clear") {
+      tempNum1 = "";
+      tempNum2 = "";
+      inputNum = "";
+      tempOperand = "";
+      displayOutput = "0";
+      // If backspace is selected, take latest character off of inputNum
+    } else if (e.target.textContent === "⌫") {
+      if (inputNum.length > 1) {
+        inputNum = inputNum.slice(0, -1);
+        displayOutput = inputNum;
+      } else {
+        inputNum = "";
+        displayOutput = 0;
+      }
     } else {
       // Perform math function if both tempNum1 and tempNum2 both have values
       if (tempNum1 != "") {
@@ -64,9 +82,8 @@ btn.forEach(function (currentValue, currentIndex, listObj) {
           inputNum = "";
           tempOperand = "";
         } else {
-          tempNum1 = toString(displayOutput);
+          tempNum1 = displayOutput;
           tempNum2 = "";
-          console.log(displayOutput);
         }
         // If the Equals button is selected before second num is enter, display error
       } else if (e.target.textContent === "=" && tempNum2 === "") {
@@ -78,13 +95,11 @@ btn.forEach(function (currentValue, currentIndex, listObj) {
         // If tempNum1 is empty, put input number into it
         if (tempNum1 === "") {
           tempNum1 = inputNum;
-          console.log(tempNum1);
           inputNum = "";
           tempOperand = e.target.textContent;
         } else {
           // If tempNum1 has data already, put number into tempNum2 then evaluate
           tempNum2 = inputNum;
-          console.log(tempNum2);
           inputNum = "";
           // Choose math function based on operator
           displayOutput = operate(
@@ -99,12 +114,10 @@ btn.forEach(function (currentValue, currentIndex, listObj) {
             tempNum2 = "";
             inputNum = "";
             tempOperand = "";
-            console.log(displayOutput);
           } else {
-            tempNum1 = toString(displayOutput);
+            tempNum1 = displayOutput;
             tempNum2 = "";
             tempOperand;
-            console.log(displayOutput);
           }
         }
       }
