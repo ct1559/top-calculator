@@ -9,7 +9,7 @@ body {
 }
 
 .calc-container {
-  height: 700px;
+  height: 670px;
   width: 500px;
   background-color: #f39189;
   border-radius: 10px;
@@ -55,6 +55,10 @@ body {
   align-items: center;
 }
 
+.btn:active {
+  border: 5px solid white;
+}
+
 #backspace {
   grid-area: backspace;
 }
@@ -77,4 +81,9 @@ body {
 
 .clear {
   background-color: #6e7582;
+}
+
+.footer {
+  font-family: "Press Start 2P", cursive;
+  font-size: 25px;
 }

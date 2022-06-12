@@ -30,6 +30,10 @@ function operate(operand, num1, num2) {
   }
 }
 
+function isFloat(num) {
+  return Number(num) === num && num % 1 !== 0;
+}
+
 // Input Variables
 let inputNum = "";
 let tempOperand = "";
@@ -46,7 +50,12 @@ btn.forEach(function (currentValue, currentIndex, listObj) {
 
     // Keep adding characters to Input num until the btn selection is not a number
     if (numRegex.test(e.target.textContent)) {
-      inputNum += e.target.textContent;
+      // Ignore decimals after first one
+      if (inputNum.includes(".") && e.target.textContent === ".") {
+        inputNum = inputNum;
+      } else {
+        inputNum += e.target.textContent;
+      }
       displayOutput = inputNum;
       // Clear input if clear button pressed
     } else if (e.target.textContent === "Clear") {
@@ -74,9 +83,13 @@ btn.forEach(function (currentValue, currentIndex, listObj) {
           parseFloat(tempNum1),
           parseFloat(tempNum2)
         );
+        // Check if its float, if so round to two decimal points
+        isFloat(displayOutput)
+          ? (displayOutput = displayOutput.toFixed(2))
+          : (displayOutput = displayOutput);
         tempOperand = e.target.textContent;
         // Clear variables is equals button is hit to complete operation
-        if (tempOperand === "=") {
+        if (tempOperand === "=" || typeof displayOutput === "string") {
           tempNum1 = "";
           tempNum2 = "";
           inputNum = "";
